@@ -4,14 +4,14 @@ React-приложение для управления балансами игр
 
 ## Архитектура (FSD)
 
-- **app** — провайдеры (QueryClient, ToastContainer), PageLoader, глобальные стили
+- **app** — провайдеры (QueryClient, ThemeProvider, ToastContainer), PageLoader, глобальные стили
 - **pages** — страницы (HomePage)
 - **widgets** — device-list, player-list (композиции UI)
 - **features** — balance-form (ui + BalanceForm.module.css, lib)
 - **entities** — device (api, model, ui)
-- **shared** — config (api, constants, messages), lib (валидация, formatter, normalization, errors, api), ui (PageLoader, ContentLoader)
+- **shared** — config (api, constants, messages), lib (валидация, formatter, normalization, errors, api), ui (PageLoader, ContentLoader, ThemeToggle)
 
-**Решения:** TanStack Query; фабрики сервисов с DI (getFetchFn из config); API → DTO маппер; lazy-loading PlayerList; мемоизация; submitBalanceOperation — общая логика deposit/withdraw (DRY); сообщения в config/messages; явная проверка deviceId в мутациях.
+**Решения:** TanStack Query; ThemeProvider (light/dark, localStorage + prefers-color-scheme); фабрики сервисов с DI (getFetchFn из config); API → DTO маппер; lazy-loading PlayerList; мемоизация; submitBalanceOperation — общая логика deposit/withdraw (DRY); сообщения в config/messages; явная проверка deviceId в мутациях.
 
 ## Запуск
 
