@@ -1,0 +1,55 @@
+.pageLoader {
+  position: fixed;
+  inset: 0;
+  z-index: 1000003;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  transition: opacity 0.6s ease-in-out;
+}
+
+.pageLoaderHidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loadingLogo {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.logoBg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  opacity: 0.2;
+  filter: grayscale(100%);
+  display: block;
+}
+
+.progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  overflow: hidden;
+  transition: width 0.6s ease-in-out;
+}
+
+.logoFg {
+  display: block;
+  width: 120px;
+  height: 120px;
+  max-width: none;
+  min-width: 120px;
+  min-height: 120px;
+  object-fit: contain;
+}

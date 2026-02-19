@@ -1,0 +1,1 @@
+export { normalizeString } from './useStringNormalization';

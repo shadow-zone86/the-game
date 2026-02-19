@@ -1,0 +1,101 @@
+:root {
+  font-family: system-ui, -apple-system, sans-serif;
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition-smooth: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.player-item {
+  transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.player-item__content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+  align-items: start;
+}
+
+.player-item:hover {
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
+}
+
+.device-item {
+  cursor: pointer;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.device-item:hover {
+  transform: translateX(2px);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes playerListEnter {
+  from {
+    opacity: 0;
+    transform: translateX(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes placeholderFade {
+  from {
+    opacity: 0.6;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.player-list-entrance {
+  animation: playerListEnter var(--transition-smooth) forwards;
+  will-change: opacity, transform;
+}
+
+.player-list-entrance .list-group {
+  overflow: hidden;
+}
+
+.player-list-placeholder {
+  animation: placeholderFade 0.3s ease-out;
+}
+
+.player-list-loader {
+  animation: placeholderFade 0.2s ease-out;
+}
+
+/* Staggered appearance for list items using CSS custom property */
+.list-group-flush .list-group-item {
+  animation: fadeIn var(--transition-normal) ease-out both;
+  will-change: opacity, transform;
+}
+
+.list-group-flush .list-group-item:nth-child(1) { animation-delay: 0.03s; }
+.list-group-flush .list-group-item:nth-child(2) { animation-delay: 0.06s; }
+.list-group-flush .list-group-item:nth-child(3) { animation-delay: 0.09s; }
+.list-group-flush .list-group-item:nth-child(4) { animation-delay: 0.12s; }
+.list-group-flush .list-group-item:nth-child(5) { animation-delay: 0.15s; }
+.list-group-flush .list-group-item:nth-child(6) { animation-delay: 0.18s; }
+.list-group-flush .list-group-item:nth-child(n+7) { animation-delay: 0.21s; }
+
+.balance-form {
+  width: 100%;
+  min-width: 0;
+}
+
+.balance-form .form-control {
+  max-width: 17rem;
+}

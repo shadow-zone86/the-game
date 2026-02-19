@@ -1,0 +1,31 @@
+#!/bin/sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "▶ pre-commit: lint + test + type-check + build"
+echo ""
+
+echo "▶ lint"
+npm run lint
+if [ $? -ne 0 ]; then echo "✗ lint failed"; exit 1; fi
+echo "✓ lint passed"
+echo ""
+
+echo "▶ test"
+npm run test
+if [ $? -ne 0 ]; then echo "✗ test failed"; exit 1; fi
+echo "✓ test passed"
+echo ""
+
+echo "▶ type-check"
+npm run type-check
+if [ $? -ne 0 ]; then echo "✗ type-check failed"; exit 1; fi
+echo "✓ type-check passed"
+echo ""
+
+echo "▶ build"
+npm run build
+if [ $? -ne 0 ]; then echo "✗ build failed"; exit 1; fi
+echo "✓ build passed"
+echo ""
+
+echo "✓ All checks passed"
