@@ -1,5 +1,6 @@
 import { useState, useCallback, lazy, Suspense } from 'react';
-import { Container, Row, Col, Card, Spinner } from 'react-bootstrap';
+import { Container, Row, Col, Card } from 'react-bootstrap';
+import { ContentLoader } from '@/shared/ui/ContentLoader';
 import { DeviceList } from '@/widgets/device-list';
 import type { DeviceDto } from '@/entities/device';
 
@@ -35,8 +36,8 @@ export function HomePage() {
           <Suspense
             fallback={
               <Card className="h-100">
-                <Card.Body className="d-flex justify-content-center align-items-center">
-                  <Spinner animation="border" />
+                <Card.Body className="p-0">
+                  <ContentLoader />
                 </Card.Body>
               </Card>
             }

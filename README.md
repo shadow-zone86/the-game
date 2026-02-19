@@ -22,7 +22,9 @@ npm run storybook
 npm run test
 ```
 
-**Сборка:** `npm run build` | `npm run preview` | `npm run type-check` | `npm run build:analyze`
+**Сборка:** `npm run build` | `npm run preview` | `npm run type-check`
+
+**Bundle analyze:** `npm run build:analyze` — собирает проект и открывает `dist/stats.html` с treemap чанков (JS, CSS). Используйте для контроля размера бандла.
 
 ## Pre-commit (Husky)
 

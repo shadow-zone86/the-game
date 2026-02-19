@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ToastContainer } from 'react-toastify';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import '@/app/styles/bootstrap-custom.scss';
 import 'react-toastify/dist/ReactToastify.css';
 import '@/app/styles/index.css';
 import { App } from './App';

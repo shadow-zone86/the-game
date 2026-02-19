@@ -14,7 +14,11 @@
  *    без двусмысленности.
  */
 
-import { BALANCE_DECIMAL_REGEX } from '@/shared/config/constants';
+import {
+  BALANCE_DECIMAL_REGEX,
+  BALANCE_INVALID_CHARS_REGEX,
+  BALANCE_DECIMAL_OVERFLOW_REGEX,
+} from '@/shared/config/constants';
 import { normalizeString } from '@/shared/lib/normalization';
 
 /** Проверка: строка — неотрицательное число с не более чем 2 знаками после запятой */
@@ -45,8 +49,9 @@ export function getBalanceValidationError(value: string): string | null {
   const n = normalizeString(value);
   if (!n) return null;
   if (n === '.') return 'Введите число, например 100 или 100.50';
-  if (/[^\d.]/.test(n)) return 'Допустимы только цифры и одна точка';
-  if (/\.\d{3,}$/.test(n))
+  if (BALANCE_INVALID_CHARS_REGEX.test(n))
+    return 'Допустимы только цифры и одна точка';
+  if (BALANCE_DECIMAL_OVERFLOW_REGEX.test(n))
     return 'Допустимо не более 2 знаков после запятой (например, 100.50)';
   const num = parseFloat(n);
   if (Number.isNaN(num) || num < 0) return 'Введите неотрицательное число';

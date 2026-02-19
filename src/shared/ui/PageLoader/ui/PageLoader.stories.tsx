@@ -4,10 +4,16 @@ import { PageLoader } from './PageLoader';
 const meta: Meta<typeof PageLoader> = {
   title: 'Shared/PageLoader',
   component: PageLoader,
+  tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
+    docs: {
+      description: {
+        component:
+          'Полноэкранный лоадер при загрузке страницы. Скрывается после события load или по таймауту.',
+      },
+    },
   },
-  tags: ['autodocs'],
 };
 
 export default meta;

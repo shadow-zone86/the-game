@@ -18,8 +18,7 @@ function createParams(overrides: Partial<Parameters<typeof submitBalanceOperatio
     placeId: 1,
     submit: vi.fn().mockResolvedValue(undefined),
     deltaSign: 1 as const,
-    successMessage: 'Баланс пополнен',
-    errorMessage: 'Ошибка пополнения',
+    messages: { success: 'Баланс пополнен', error: 'Ошибка пополнения' },
     onSuccess: vi.fn(),
     ...overrides,
   };
@@ -78,7 +77,7 @@ describe('submitBalanceOperation', () => {
       amount: '100.50',
       placeId: 1,
       deltaSign: 1,
-      successMessage: 'Баланс пополнен',
+      messages: { success: 'Баланс пополнен', error: 'Ошибка пополнения' },
     });
 
     await submitBalanceOperation(params);
@@ -94,7 +93,7 @@ describe('submitBalanceOperation', () => {
       placeId: 2,
       currentBalance: 10000,
       deltaSign: -1,
-      successMessage: 'Средства сняты',
+      messages: { success: 'Средства сняты', error: 'Ошибка снятия' },
     });
 
     await submitBalanceOperation(params);
@@ -132,7 +131,7 @@ describe('submitBalanceOperation', () => {
   it('при ошибке submit (не Error) использует errorMessage', async () => {
     const params = createParams({
       submit: vi.fn().mockRejectedValue('unknown error'),
-      errorMessage: 'Ошибка пополнения',
+      messages: { success: 'Баланс пополнен', error: 'Ошибка пополнения' },
     });
 
     await submitBalanceOperation(params);
