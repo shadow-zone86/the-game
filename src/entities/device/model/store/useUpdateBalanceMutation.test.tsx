@@ -51,6 +51,21 @@ describe('useUpdateBalanceMutation', () => {
     expect(mockUpdate).toHaveBeenCalledWith('10', 1, { delta: 500 });
   });
 
+  it('при deviceId=null выбрасывает ошибку при вызове mutate', async () => {
+    const { result } = renderHook(() => useUpdateBalanceMutation(null), {
+      wrapper: createWrapper(),
+    });
+
+    result.current.mutate({ placeId: 1, delta: 500 });
+
+    await waitFor(() => expect(result.current.isError).toBe(true));
+
+    expect(mockUpdate).not.toHaveBeenCalled();
+    expect(result.current.error?.message).toBe(
+      'deviceId is required for balance update'
+    );
+  });
+
   it('при успехе инвалидирует кэш (invalidateQueries вызывается)', async () => {
     const queryClient = new QueryClient();
     const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries');

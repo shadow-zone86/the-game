@@ -13,7 +13,12 @@ export function useUpdateBalanceMutation(deviceId: string | null) {
     }: {
       placeId: number;
       delta: number;
-    }) => updateBalanceService.update(deviceId!, placeId, { delta }),
+    }) => {
+      if (!deviceId) {
+        throw new Error('deviceId is required for balance update');
+      }
+      return updateBalanceService.update(deviceId, placeId, { delta });
+    },
     onSuccess: () => {
       if (deviceId) {
         queryClient.invalidateQueries({ queryKey: deviceQueryKey(deviceId) });

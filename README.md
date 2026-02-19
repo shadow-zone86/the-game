@@ -9,9 +9,9 @@ React-приложение для управления балансами игр
 - **widgets** — device-list, player-list (композиции UI)
 - **features** — balance-form (ui + BalanceForm.module.css, lib)
 - **entities** — device (api, model, ui)
-- **shared** — config, lib (валидация, formatter, normalization), ui (PageLoader)
+- **shared** — config (api, constants, messages), lib (валидация, formatter, normalization, errors, api), ui (PageLoader, ContentLoader)
 
-**Решения:** TanStack Query; фабрики сервисов с DI; API → DTO маппер; lazy-loading PlayerList; мемоизация; submitBalanceOperation — общая логика deposit/withdraw (DRY).
+**Решения:** TanStack Query; фабрики сервисов с DI (getFetchFn из config); API → DTO маппер; lazy-loading PlayerList; мемоизация; submitBalanceOperation — общая логика deposit/withdraw (DRY); сообщения в config/messages; явная проверка deviceId в мутациях.
 
 ## Запуск
 

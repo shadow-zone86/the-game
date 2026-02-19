@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { normalizeString } from './useStringNormalization';
+import { normalizeString } from './normalizeString';
 
 describe('normalizeString', () => {
   it('возвращает строку в нижнем регистре и без пробелов по краям', () => {
