@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { ListGroup, Alert } from 'react-bootstrap';
 import { ContentLoader } from '@/shared/ui/ContentLoader';
+import { MESSAGES } from '@/shared/config/messages';
 import { getErrorMessage } from '@/shared/lib/errors';
 import { useDevicesQuery, DeviceItem } from '@/entities/device';
 import type { DeviceDto } from '@/entities/device';
@@ -20,8 +21,8 @@ export const DeviceList = memo(function DeviceList({ selectedId, onSelect }: Dev
   if (error) {
     return (
       <Alert variant="danger">
-        Не удалось загрузить устройства:{' '}
-        {getErrorMessage(error, 'Ошибка')}
+        {MESSAGES.devicesLoadFailed}:{' '}
+        {getErrorMessage(error, MESSAGES.error)}
       </Alert>
     );
   }
@@ -32,7 +33,7 @@ export const DeviceList = memo(function DeviceList({ selectedId, onSelect }: Dev
     <ListGroup as="ul">
       {list.length === 0 ? (
         <ListGroup.Item as="li" className="text-muted">
-          Нет устройств
+          {MESSAGES.noDevices}
         </ListGroup.Item>
       ) : (
         list.map((device: DeviceDto) => (

@@ -3,6 +3,7 @@ import { Card, ListGroup, Alert } from 'react-bootstrap';
 import { ContentLoader } from '@/shared/ui/ContentLoader';
 import { MIN_LOADER_MS } from '@/shared/config/constants';
 import { useMinLoaderDelay } from '@/shared/lib/hooks/useMinLoaderDelay';
+import { MESSAGES } from '@/shared/config/messages';
 import { getErrorMessage } from '@/shared/lib/errors';
 import { useDeviceQuery, useUpdateBalanceMutation } from '@/entities/device';
 import { BalanceForm } from '@/features/balance-form';
@@ -28,7 +29,7 @@ export function PlayerList({ deviceId }: PlayerListProps) {
     return (
       <Card className="h-100 player-list-placeholder">
         <Card.Body className="text-muted text-center d-flex justify-content-center align-items-center">
-          Выберите устройство в списке слева
+          {MESSAGES.selectDevice}
         </Card.Body>
       </Card>
     );
@@ -47,8 +48,8 @@ export function PlayerList({ deviceId }: PlayerListProps) {
   if (error) {
     return (
       <Alert variant="danger">
-        Ошибка загрузки:{' '}
-        {getErrorMessage(error, 'Неизвестная ошибка')}
+        {MESSAGES.loadError}:{' '}
+        {getErrorMessage(error, MESSAGES.unknownError)}
       </Alert>
     );
   }
@@ -61,7 +62,7 @@ export function PlayerList({ deviceId }: PlayerListProps) {
       <ListGroup variant="flush" className="list-group list-group-flush">
         {places.length === 0 ? (
           <ListGroup.Item className="text-muted">
-            Нет мест (игроков)
+            {MESSAGES.noPlaces}
           </ListGroup.Item>
         ) : (
           places.map((place) => (

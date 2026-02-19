@@ -7,9 +7,9 @@ import {
   createGetDeviceService,
   createUpdateBalanceService,
 } from '../../api';
-import { API_BASE } from '@/shared/config/api';
+import { API_BASE, getFetchFn } from '@/shared/config/api';
 
-const fetchFn = typeof window !== 'undefined' ? window.fetch.bind(window) : fetch;
+const fetchFn = getFetchFn();
 
 export const getDevicesService = createGetDevicesService(fetchFn, API_BASE);
 export const getDeviceService = createGetDeviceService(fetchFn, API_BASE);

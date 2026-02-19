@@ -1,1 +1,1 @@
-export { normalizeString } from './useStringNormalization';
+export { normalizeString } from './normalizeString';
