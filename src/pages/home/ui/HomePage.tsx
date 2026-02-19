@@ -1,6 +1,7 @@
 import { useState, useCallback, lazy, Suspense } from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import { ContentLoader } from '@/shared/ui/ContentLoader';
+import { ThemeToggle } from '@/shared/ui/ThemeToggle';
 import { DeviceList } from '@/widgets/device-list';
 import type { DeviceDto } from '@/entities/device';
 
@@ -19,8 +20,9 @@ export function HomePage() {
   return (
     <Container fluid className="py-3 py-md-4">
       <Row className="mb-3">
-        <Col>
+        <Col className="d-flex align-items-center justify-content-between gap-2 flex-wrap">
           <h1 className="h4 mb-0">Управление балансами игроков</h1>
+          <ThemeToggle />
         </Col>
       </Row>
       <Row>
