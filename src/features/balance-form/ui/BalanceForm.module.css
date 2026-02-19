@@ -1,0 +1,8 @@
+.balanceForm {
+  width: 100%;
+  min-width: 0;
+}
+
+.formControl {
+  max-width: 17rem;
+}

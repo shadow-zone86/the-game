@@ -13,7 +13,7 @@ export const DeviceItem = memo(function DeviceItem({
   isActive,
   onSelect,
 }: DeviceItemProps) {
-  const handleClick = useCallback(() => onSelect(device), [device, onSelect]);
+  const handleClick = useCallback((): void => onSelect(device), [device, onSelect]);
   return (
     <ListGroup.Item
       as="li"

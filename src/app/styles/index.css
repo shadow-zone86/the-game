@@ -77,7 +77,6 @@
   animation: placeholderFade 0.2s ease-out;
 }
 
-/* Staggered appearance for list items using CSS custom property */
 .list-group-flush .list-group-item {
   animation: fadeIn var(--transition-normal) ease-out both;
   will-change: opacity, transform;
@@ -90,12 +89,3 @@
 .list-group-flush .list-group-item:nth-child(5) { animation-delay: 0.15s; }
 .list-group-flush .list-group-item:nth-child(6) { animation-delay: 0.18s; }
 .list-group-flush .list-group-item:nth-child(n+7) { animation-delay: 0.21s; }
-
-.balance-form {
-  width: 100%;
-  min-width: 0;
-}
-
-.balance-form .form-control {
-  max-width: 17rem;
-}

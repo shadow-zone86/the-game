@@ -1,6 +1,5 @@
 /**
  * DTO для store и UI.
- * Баланс отображаемый — formattedBalance для вывода пользователю.
  */
 
 export interface DevicePlaceDto {

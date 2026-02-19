@@ -1,13 +1,9 @@
 import { useState, useCallback, memo } from 'react';
 import { Form, InputGroup, Button } from 'react-bootstrap';
-import { toast } from 'react-toastify';
-import { MINOR_UNITS } from '@/shared/config/constants';
+import styles from './BalanceForm.module.css';
 import { normalizeString } from '@/shared/lib/normalization';
-import {
-  isValidBalanceInput,
-  parseAmountToMinor,
-  getBalanceValidationError,
-} from '@/shared/lib/validation/balanceValidation';
+import { getBalanceValidationError } from '@/shared/lib/validation/balanceValidation';
+import { submitBalanceOperation } from '../lib';
 import type { DevicePlaceDto } from '@/entities/device';
 
 interface BalanceFormProps {
@@ -33,58 +29,49 @@ export const BalanceForm = memo(function BalanceForm({
     setTouched(true);
   }, []);
 
+  const resetForm = useCallback(() => {
+    setAmount('');
+    setTouched(false);
+  }, []);
+
   const handleDeposit = useCallback(async (): Promise<void> => {
-    if (!isValidBalanceInput(amount)) {
-      toast.error(validationError ?? 'Введите корректную сумму');
-      return;
-    }
-    const minor = parseAmountToMinor(amount, MINOR_UNITS);
-    if (minor === null || minor <= 0) {
-      toast.error('Введите положительную сумму');
-      return;
-    }
-    try {
-      await onDeposit(place.place, minor);
-      setAmount('');
-      setTouched(false);
-      toast.success('Баланс пополнен');
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : 'Ошибка пополнения');
-    }
-  }, [amount, validationError, place.place, onDeposit]);
+    await submitBalanceOperation({
+      amount,
+      validationError,
+      placeId: place.place,
+      submit: onDeposit,
+      deltaSign: 1,
+      successMessage: 'Баланс пополнен',
+      errorMessage: 'Ошибка пополнения',
+      onSuccess: resetForm,
+    });
+  }, [amount, validationError, place.place, onDeposit, resetForm]);
 
   const handleWithdraw = useCallback(async (): Promise<void> => {
-    if (!isValidBalanceInput(amount)) {
-      toast.error(validationError ?? 'Введите корректную сумму');
-      return;
-    }
-    const minor = parseAmountToMinor(amount, MINOR_UNITS);
-    if (minor === null || minor <= 0) {
-      toast.error('Введите положительную сумму');
-      return;
-    }
-    const currentMinor = place.balances;
-    if (minor > currentMinor) {
-      toast.error('Недостаточно средств на балансе');
-      return;
-    }
-    try {
-      await onWithdraw(place.place, -minor);
-      setAmount('');
-      setTouched(false);
-      toast.success('Средства сняты');
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : 'Ошибка снятия');
-    }
-  }, [amount, validationError, place.place, place.balances, onWithdraw]);
+    await submitBalanceOperation({
+      amount,
+      validationError,
+      placeId: place.place,
+      currentBalance: place.balances,
+      submit: onWithdraw,
+      deltaSign: -1,
+      successMessage: 'Средства сняты',
+      errorMessage: 'Ошибка снятия',
+      onSuccess: resetForm,
+    });
+  }, [amount, validationError, place.place, place.balances, onWithdraw, resetForm]);
 
   return (
-    <div className="balance-form rounded p-3 mb-3">
+    <div className={`${styles.balanceForm} rounded p-3 mb-3`}>
       <div className="mb-2">
-        <strong>Баланс:</strong> {place.formattedBalance} {place.currency}
+        <strong>Место {place.place}</strong>
+        <span className="text-muted ms-2">
+          Баланс: {place.formattedBalance} {place.currency}
+        </span>
       </div>
       <InputGroup size="sm" className="mb-2">
         <Form.Control
+          className={styles.formControl}
           type="text"
           inputMode="decimal"
           placeholder="Сумма (например 100.50)"
