@@ -1,5 +1,6 @@
 import { toast } from 'react-toastify';
 import { MINOR_UNITS } from '@/shared/config/constants';
+import { getErrorMessageOrFallback } from '@/shared/lib/errors';
 import {
   isValidBalanceInput,
   parseAmountToMinor,
@@ -12,8 +13,7 @@ interface SubmitBalanceOperationParams {
   currentBalance?: number;
   submit: (placeId: number, delta: number) => Promise<unknown>;
   deltaSign: 1 | -1;
-  successMessage: string;
-  errorMessage: string;
+  messages: { success: string; error: string };
   onSuccess: () => void;
 }
 
@@ -24,8 +24,7 @@ export async function submitBalanceOperation({
   currentBalance,
   submit,
   deltaSign,
-  successMessage,
-  errorMessage,
+  messages: { success: successMessage, error: errorMessage },
   onSuccess,
 }: SubmitBalanceOperationParams): Promise<void> {
   if (!isValidBalanceInput(amount)) {
@@ -46,6 +45,6 @@ export async function submitBalanceOperation({
     onSuccess();
     toast.success(successMessage);
   } catch (e) {
-    toast.error(e instanceof Error ? e.message : errorMessage);
+    toast.error(getErrorMessageOrFallback(e, errorMessage));
   }
 }

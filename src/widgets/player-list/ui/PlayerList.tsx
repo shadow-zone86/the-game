@@ -1,6 +1,9 @@
-import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
-import { Card, ListGroup, Spinner, Alert } from 'react-bootstrap';
+import { useMemo, useCallback } from 'react';
+import { Card, ListGroup, Alert } from 'react-bootstrap';
+import { ContentLoader } from '@/shared/ui/ContentLoader';
 import { MIN_LOADER_MS } from '@/shared/config/constants';
+import { useMinLoaderDelay } from '@/shared/lib/hooks/useMinLoaderDelay';
+import { getErrorMessage } from '@/shared/lib/errors';
 import { useDeviceQuery, useUpdateBalanceMutation } from '@/entities/device';
 import { BalanceForm } from '@/features/balance-form';
 
@@ -11,43 +14,20 @@ interface PlayerListProps {
 export function PlayerList({ deviceId }: PlayerListProps) {
   const { data: device, isLoading, error } = useDeviceQuery(deviceId);
   const mutation = useUpdateBalanceMutation(deviceId);
-  const [showContent, setShowContent] = useState(false);
-  const loadStartRef = useRef<number | null>(null);
+  const showContent = useMinLoaderDelay(isLoading, MIN_LOADER_MS);
 
   const places = useMemo(() => device?.places ?? [], [device?.places]);
 
-  const handleDeposit = useCallback(
+  const handleBalanceMutation = useCallback(
     (placeId: number, delta: number) =>
       mutation.mutateAsync({ placeId, delta }),
     [mutation]
   );
-  const handleWithdraw = useCallback(
-    (placeId: number, delta: number) =>
-      mutation.mutateAsync({ placeId, delta }),
-    [mutation]
-  );
-
-  // Минимальное время показа лоадера — избегаем мигания при быстрой загрузке
-  useEffect(() => {
-    if (isLoading) {
-      loadStartRef.current = Date.now();
-      queueMicrotask(() => setShowContent(false));
-    } else if (!isLoading && device && !error) {
-      const elapsed = loadStartRef.current
-        ? Date.now() - loadStartRef.current
-        : 0;
-      const delay = Math.max(0, MIN_LOADER_MS - elapsed);
-      const t = setTimeout(() => setShowContent(true), delay);
-      return () => clearTimeout(t);
-    } else {
-      queueMicrotask(() => setShowContent(false));
-    }
-  }, [isLoading, device, error]);
 
   if (!deviceId) {
     return (
       <Card className="h-100 player-list-placeholder">
-        <Card.Body className="text-muted text-center">
+        <Card.Body className="text-muted text-center d-flex justify-content-center align-items-center">
           Выберите устройство в списке слева
         </Card.Body>
       </Card>
@@ -57,8 +37,8 @@ export function PlayerList({ deviceId }: PlayerListProps) {
   if (isLoading || !showContent) {
     return (
       <Card className="h-100 player-list-loader">
-        <Card.Body className="d-flex justify-content-center align-items-center">
-          <Spinner animation="border" />
+        <Card.Body className="p-0 h-100 d-flex justify-content-center align-items-center">
+          <ContentLoader />
         </Card.Body>
       </Card>
     );
@@ -68,7 +48,7 @@ export function PlayerList({ deviceId }: PlayerListProps) {
     return (
       <Alert variant="danger">
         Ошибка загрузки:{' '}
-        {error instanceof Error ? error.message : 'Неизвестная ошибка'}
+        {getErrorMessage(error, 'Неизвестная ошибка')}
       </Alert>
     );
   }
@@ -89,8 +69,8 @@ export function PlayerList({ deviceId }: PlayerListProps) {
               <div className="player-item__content">
                 <BalanceForm
                   place={place}
-                  onDeposit={handleDeposit}
-                  onWithdraw={handleWithdraw}
+                  onDeposit={handleBalanceMutation}
+                  onWithdraw={handleBalanceMutation}
                 />
               </div>
             </ListGroup.Item>

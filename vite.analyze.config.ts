@@ -4,6 +4,13 @@ import react from '@vitejs/plugin-react';
 import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig({
+  css: {
+    preprocessorOptions: {
+      scss: {
+        silenceDeprecations: ['import', 'color-functions', 'global-builtin', 'if-function'],
+      },
+    },
+  },
   plugins: [
     react(),
     visualizer({

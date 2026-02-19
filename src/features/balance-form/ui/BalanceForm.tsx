@@ -1,6 +1,7 @@
 import { useState, useCallback, memo } from 'react';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import styles from './BalanceForm.module.css';
+import { BALANCE_INPUT_PATTERN } from '@/shared/config/constants';
 import { normalizeString } from '@/shared/lib/normalization';
 import { getBalanceValidationError } from '@/shared/lib/validation/balanceValidation';
 import { submitBalanceOperation } from '../lib';
@@ -25,7 +26,7 @@ export const BalanceForm = memo(function BalanceForm({
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>): void => {
     const v = normalizeString(e.target.value) ?? e.target.value;
-    if (v === '' || /^\d*\.?\d*$/.test(v)) setAmount(v);
+    if (v === '' || BALANCE_INPUT_PATTERN.test(v)) setAmount(v);
     setTouched(true);
   }, []);
 
@@ -41,8 +42,7 @@ export const BalanceForm = memo(function BalanceForm({
       placeId: place.place,
       submit: onDeposit,
       deltaSign: 1,
-      successMessage: 'Баланс пополнен',
-      errorMessage: 'Ошибка пополнения',
+      messages: { success: 'Баланс пополнен', error: 'Ошибка пополнения' },
       onSuccess: resetForm,
     });
   }, [amount, validationError, place.place, onDeposit, resetForm]);
@@ -55,8 +55,7 @@ export const BalanceForm = memo(function BalanceForm({
       currentBalance: place.balances,
       submit: onWithdraw,
       deltaSign: -1,
-      successMessage: 'Средства сняты',
-      errorMessage: 'Ошибка снятия',
+      messages: { success: 'Средства сняты', error: 'Ошибка снятия' },
       onSuccess: resetForm,
     });
   }, [amount, validationError, place.place, place.balances, onWithdraw, resetForm]);

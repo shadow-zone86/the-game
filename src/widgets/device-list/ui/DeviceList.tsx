@@ -1,5 +1,7 @@
 import { memo } from 'react';
-import { ListGroup, Spinner, Alert } from 'react-bootstrap';
+import { ListGroup, Alert } from 'react-bootstrap';
+import { ContentLoader } from '@/shared/ui/ContentLoader';
+import { getErrorMessage } from '@/shared/lib/errors';
 import { useDevicesQuery, DeviceItem } from '@/entities/device';
 import type { DeviceDto } from '@/entities/device';
 
@@ -12,18 +14,14 @@ export const DeviceList = memo(function DeviceList({ selectedId, onSelect }: Dev
   const { data: devices, isLoading, error } = useDevicesQuery();
 
   if (isLoading) {
-    return (
-      <div className="d-flex justify-content-center p-4">
-        <Spinner animation="border" />
-      </div>
-    );
+    return <ContentLoader />;
   }
 
   if (error) {
     return (
       <Alert variant="danger">
         Не удалось загрузить устройства:{' '}
-        {error instanceof Error ? error.message : 'Ошибка'}
+        {getErrorMessage(error, 'Ошибка')}
       </Alert>
     );
   }
