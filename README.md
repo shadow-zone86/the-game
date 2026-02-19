@@ -7,11 +7,11 @@ React-приложение для управления балансами игр
 - **app** — провайдеры (QueryClient, ToastContainer), PageLoader, глобальные стили
 - **pages** — страницы (HomePage)
 - **widgets** — device-list, player-list (композиции UI)
-- **features** — balance-form (действия пользователя)
+- **features** — balance-form (ui + BalanceForm.module.css, lib)
 - **entities** — device (api, model, ui)
 - **shared** — config, lib (валидация, formatter, normalization), ui (PageLoader)
 
-**Решения:** TanStack Query для кэширования и мутаций; фабрики сервисов с DI; API → DTO маппер для UI; lazy-loading PlayerList; мемоизация компонентов и колбэков.
+**Решения:** TanStack Query; фабрики сервисов с DI; API → DTO маппер; lazy-loading PlayerList; мемоизация; submitBalanceOperation — общая логика deposit/withdraw (DRY).
 
 ## Запуск
 
